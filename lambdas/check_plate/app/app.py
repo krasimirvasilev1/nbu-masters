@@ -35,7 +35,9 @@ def check_client_record(plates, dynamodb=None):
     for plate in plates:
         response = table.get_item(Key={'Plate': plate})
         if 'Item' in response:
-            return True
+            return plate, 200
+        else:
+            return plates[0], 400
 
 def get_plates(img_path):
     try:
@@ -59,8 +61,10 @@ def decode_img(encoded_img):
 
 def handler(event, context):    
     plates = get_plates(decode_img(event['image']))
-    if check_client_record(plates):
-        #save_to_s3(file_content)
-        return "Success!\n"
-    else:
-        return "Error!\n"
+    plate, status = check_client_record(plates)
+    response = {
+        'plate': plate,
+        'timestamp': get_utc_timestamp(),
+        'status': status
+    }
+    return json.dumps(response)
