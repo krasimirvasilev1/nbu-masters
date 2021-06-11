@@ -29,7 +29,7 @@ def check_client_record(plates, dynamodb=None):
                           aws_access_key_id="test",
                           aws_secret_access_key="test",
                           region_name="eu-central-1",
-                          endpoint_url="http://192.168.68.109:8000") # change needed to put the local IP of the host where dynamo lives (in case of local run)
+                          endpoint_url="http://172.18.240.1:8000") # change needed to put the local IP of the host where dynamo lives (in case of local run)
 
     table = dynamodb.Table('Clients')
     for plate in plates:
