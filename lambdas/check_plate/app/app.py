@@ -61,7 +61,11 @@ def decode_img(encoded_img):
 
 def handler(event, context):    
     plates = get_plates(decode_img(event['image']))
-    plate, status = check_client_record(plates)
+    if not plates:
+        plate = "Plate not found !"
+        status : 400
+    else:
+        plate, status = check_client_record(plates)
     response = {
         'plate': plate,
         'timestamp': get_utc_timestamp(),
