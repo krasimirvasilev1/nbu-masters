@@ -38,6 +38,9 @@ def check_client_record(plates, dynamodb=None):
             return plate, 200
         else:
             return plates[0], 400
+    if not plates:
+        return "No valid plate was found on the given image", 400
+    
 
 def get_plates(img_path):
     try:
@@ -49,10 +52,8 @@ def get_plates(img_path):
         plates = []
         print(result_json)
         if not result_json['results']:
-            print("No Results")
             return plates
         for i in result_json['results'][0]['candidates']:
-            print("IN LOOP")
             plates.append(i['plate'])
         return plates
 
@@ -66,6 +67,7 @@ def decode_img(encoded_img):
 
 def handler(event, context):    
     plates = get_plates(decode_img(event['image']))
+    plate, status = check_client_record(plates)
     response = {
         'plate': plate,
         'timestamp': get_utc_timestamp(),
