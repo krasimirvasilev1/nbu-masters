@@ -47,6 +47,8 @@ def get_plates(img_path):
     else: 
         result_json = json.loads(result.stdout)
         plates = []
+        if not result_json['results']:
+            return plates
         for i in result_json['results'][0]['candidates']:
             plates.append(i['plate'])
         return plates
@@ -61,11 +63,6 @@ def decode_img(encoded_img):
 
 def handler(event, context):    
     plates = get_plates(decode_img(event['image']))
-    if not plates:
-        plate = "Plate not found !"
-        status : 400
-    else:
-        plate, status = check_client_record(plates)
     response = {
         'plate': plate,
         'timestamp': get_utc_timestamp(),
