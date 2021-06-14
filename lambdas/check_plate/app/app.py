@@ -47,9 +47,12 @@ def get_plates(img_path):
     else: 
         result_json = json.loads(result.stdout)
         plates = []
+        print(result_json)
         if not result_json['results']:
+            print("No Results")
             return plates
         for i in result_json['results'][0]['candidates']:
+            print("IN LOOP")
             plates.append(i['plate'])
         return plates
 
