@@ -24,7 +24,7 @@ function cloud_check () {
 
 function recognise_plate () {
     local pic=$1
-    return docker run -it --rm -v $(pwd):/data:ro stiliancvetkov/tuesalpr -j -c eu + $pic | jq -r '.results[].candidates[].plate'
+    return docker run -it --rm -v $(pwd):/data:ro krasimirvasilev1/nbu-alpr -j -c eu + $pic | jq -r '.results[].candidates[].plate'
 }
 
 function check_cache_env () {
