@@ -31,7 +31,7 @@ cd ../../utils/images
 (echo -n '{"image": "'; base64 P00399.jpeg; echo '"}') | curl -sH "Content-Type: application/json" -d @- "http://172.18.240.1:9000/2015-03-31/functions/function/invocations"
 ```
 
-### Rasberry setup
+### Raspberry Pi setup
 
 1. Insert SD card into the Raspberry Pi and install the OS as per [https://www.raspberrypi.org/documentation/installation/installing-images/]()
 
