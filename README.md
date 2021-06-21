@@ -25,10 +25,11 @@ sleep 10
 ```
 
 4. Test cloud serverless functionality. It should return "Success" response to indicated successful execution.
+Please replace {IP-ADDRESS} placeholder with the IP address of your machine !
 
 ```bash
 cd ../../utils/images
-(echo -n '{"image": "'; base64 P00399.jpeg; echo '"}') | curl -sH "Content-Type: application/json" -d @- "http://172.18.240.1:9000/2015-03-31/functions/function/invocations"
+(echo -n '{"image": "'; base64 P00399.jpeg; echo '"}') | curl -sH "Content-Type: application/json" -d @- "http://{IP-ADDRESS}:9000/2015-03-31/functions/function/invocations"
 ```
 
 ### Raspberry Pi setup
