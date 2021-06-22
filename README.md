@@ -39,7 +39,7 @@ cd dynamodb_local && mkdir -p ./docker/dynamodb && docker-compose up -d
 cd ../utils && bash dynamo_local_setup.sh
 ```
 
-**5. Open lambda config file lambdas/check_plate/app/app.py.** *Replace endpoint_url value with your IPv4 address !*
+**5. Open lambda config file lambdas/check_plate/app/app.py.** *Replace IP-ADDRESS placeholder with the IPv4 address of your machine !*
 
 
 ```python
@@ -47,7 +47,7 @@ dynamodb = boto3.resource('dynamodb',
                           aws_access_key_id="test",
                           aws_secret_access_key="test",
                           region_name="eu-central-1",
-                          endpoint_url="http://192.168.1.8:8000")
+                          endpoint_url="http://{IP-ADDRESS}:8000")
 ```
 
 *HINT - You can check your IP address by executing :
@@ -62,7 +62,7 @@ docker run -d -p 9000:8080 localfunction:latest
 sleep 10
 ```
 
-**7. Test cloud serverless functionality.** *Please replace {IP-ADDRESS} placeholder with the IP address of your machine !*
+**7. Test cloud serverless functionality.** *Please replace IP-ADDRESS placeholder with the IPv4 address of your machine !*
 
 ```bash
 cd ../../utils/images
@@ -102,10 +102,10 @@ scp ./raspberry/motion.conf pi@{RASPBERRY_IP}:/etc/motion
 ```
 **5. Wire the LEDs and the resistors following this schematic - [https://images.app.goo.gl/yhGTY9iL2KfGztLc7]()**
 
-**6. Open rasp_check config file raspberry/rasp_check.sh.** *Replace IP placeholder with your IPv4 addresss! You should provide the local IP of the host where Lambda lives!*
+**6. Open rasp_check config file raspberry/rasp_check.sh.** *Replace IP-ADDRESS placeholder with your IPv4 addresss! You should provide the local IP of the host where Lambda lives!*
 
 ```bash
-CLOUD_URL=http://{IP}:9000/2015-03-31/functions/function/invocations
+CLOUD_URL=http://{IP-ADDRESS}:9000/2015-03-31/functions/function/invocations
 ```
 
 **HINT - You can check your IP address by executing : ip a OR ipconfig | findstr /R /C:"IPv4 Address"**
