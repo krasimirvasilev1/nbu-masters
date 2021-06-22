@@ -2,21 +2,43 @@
 
 Providing access management mechanisms by leveraging microcontroller endpoints and Serverless Cloud System and Services.
 
-### Local configuration for lambda and dynamodb instances 
+### Linux/Ubuntu local configuration for lambda and dynamodb instances
 
-1. Define and run Docker container instance on which the dynamo-db instance will run. The orchestration is managed by docker-compose.yaml file which specify what image is required. 
+1. Install and configure AWS CLI
+
+```bash
+apt update && apt upgrade
+sudo apt-get install awscli
+aws --version
+aws configure
+	AWS Access Key ID: test
+	AWS Secret Access Key: test
+	Default region name: eu-central-1
+```
+
+2. Install and configure Docker.
+Replace {ubuntu-user} ! Check current user by executing whoami into the console !
+
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker {ubuntu-user}
+sudo systemctl enable docker.service && sudo systemctl enable containerd.service
+```
+
+3. Define and run Docker container instance on which the dynamo-db instance will run. The orchestration is managed by docker-compose.yaml file which specify what image is required. 
 
 ```bash
 cd dynamodb_local && mkdir -p ./docker/dynamodb && docker-compose up -d
 ```
 
-2. Give required permissions. Create database table and populate it with test values. 
+4. Give required permissions. Create database table and populate it with content. 
 
 ```bash
 cd ../utils && bash dynamo_local_setup.sh
 ```
 
-3. Build and run Lambda. Install needed dependencies, setup build environment and compile environment for lambda function.  Install prerequisites. Wait till the process is finished.
+5. Build and run Lambda. Install needed dependencies, setup build environment and compile environment for lambda function.  Install prerequisites. Wait till the process is finished.
 
 ```bash
 cd ../lambdas/check_plate && docker build -t localfunction:latest . 
@@ -24,7 +46,7 @@ docker run -d -p 9000:8080 localfunction:latest
 sleep 10
 ```
 
-4. Test cloud serverless functionality. It should return "Success" response to indicated successful execution.
+6. Test cloud serverless functionality. It should return "Success" response to indicated successful execution.
 Please replace {IP-ADDRESS} placeholder with the IP address of your machine !
 
 ```bash
@@ -47,7 +69,7 @@ apt update && apt upgrade && apt install -y jq motion
 ```
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
-sudo usermod -aG docker Pi
+sudo usermod -aG docker pi
 sudo systemctl enable docker.service && sudo systemctl enable containerd.service
 ```
 
