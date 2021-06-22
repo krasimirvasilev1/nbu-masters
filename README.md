@@ -38,7 +38,20 @@ cd dynamodb_local && mkdir -p ./docker/dynamodb && docker-compose up -d
 cd ../utils && bash dynamo_local_setup.sh
 ```
 
-5. Build and run Lambda. Install needed dependencies, setup build environment and compile environment for lambda function.  Install prerequisites. Wait till the process is finished.
+5. Open lambda config file lambdas/check_plate/app/app.py. Replace endpoint_url value with your IPv4 address !
+You can check your IP address by executing :
+ip a - Linux
+ipconfig | findstr /R /C:"IPv4 Address" - Windows
+
+```python
+dynamodb = boto3.resource('dynamodb',
+                          aws_access_key_id="test",
+                          aws_secret_access_key="test",
+                          region_name="eu-central-1",
+                          endpoint_url="http://192.168.1.8:8000")
+```
+
+6. Build and run Lambda. Install needed dependencies, setup build environment and compile environment for lambda function.  Install prerequisites. Wait till the process is finished.
 
 ```bash
 cd ../lambdas/check_plate && docker build -t localfunction:latest . 
@@ -46,7 +59,7 @@ docker run -d -p 9000:8080 localfunction:latest
 sleep 10
 ```
 
-6. Test cloud serverless functionality. It should return "Success" response to indicated successful execution.
+7. Test cloud serverless functionality. It should return "Success" response to indicated successful execution.
 Please replace {IP-ADDRESS} placeholder with the IP address of your machine !
 
 ```bash
@@ -80,19 +93,31 @@ scp ./raspberry/motion.conf pi@{RASPBERRY_IP}:/etc/motion
 ```
 5. Wire the LEDs and the resistors following this schematic - [https://images.app.goo.gl/yhGTY9iL2KfGztLc7]()
 
-6. Add the `rasp_check.sh` file to `/var/lib/motion` by executing the following command from the root directory of the repository.
+6. Open rasp_check config file raspberry/rasp_check.sh. 
+Replace CLOUD_URL with your IPv4 addresss!qw
+You should provide the local IP of the host where Lambda lives !
+
+You can check your IP address by executing :
+ip a - Linux
+ipconfig | findstr /R /C:"IPv4 Address" - Windows
+
+```bash
+CLOUD_URL=http://{IP}:9000/2015-03-31/functions/function/invocations
+```
+
+7. Add the `rasp_check.sh` file to `/var/lib/motion` by executing the following command from the root directory of the repository.
 
 ```
 scp ./raspberry/rasp_check.sh pi@{RASPBERRY_IP}:/var/lib/motion
 ```
 
-7. Start the motion service
+8. Start the motion service
 
 ```
 sudo systemctl start motion
 ```
 
-8. Pull docker image which contains OpenALPR software for automatic number-plate recognition. The image will be used for an offline check or in other words when there is no internet access.
+9. Pull docker image which contains OpenALPR software for automatic number-plate recognition. The image will be used for an offline check or in other words when there is no internet access.
 
 ```
 docker pull krasimirvasilev1/nbu-alpr
