@@ -97,13 +97,13 @@ scp ./raspberry/motion.conf pi@{RASPBERRY_IP}:/etc/motion
 Replace CLOUD_URL with your IPv4 addresss!qw
 You should provide the local IP of the host where Lambda lives !
 
-You can check your IP address by executing :
-ip a - Linux
-ipconfig | findstr /R /C:"IPv4 Address" - Windows
-
 ```bash
 CLOUD_URL=http://{IP}:9000/2015-03-31/functions/function/invocations
 ```
+
+`You can check your IP address by executing :
+ Linux - ip a
+ Windows - ipconfig | findstr /R /C:"IPv4 Address"`
 
 7. Add the `rasp_check.sh` file to `/var/lib/motion` by executing the following command from the root directory of the repository.
 
