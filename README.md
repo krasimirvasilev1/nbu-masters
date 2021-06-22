@@ -101,7 +101,7 @@ You should provide the local IP of the host where Lambda lives !
 CLOUD_URL=http://{IP}:9000/2015-03-31/functions/function/invocations
 ```
 
-**HINT - You can check your IP address by executing : ip a OR ipconfig | findstr /R /C:"IPv4 Address" depending OS
+**HINT - You can check your IP address by executing : ip a OR ipconfig | findstr /R /C:"IPv4 Address" depending OS**
 
 7. Add the `rasp_check.sh` file to `/var/lib/motion` by executing the following command from the root directory of the repository.
 
