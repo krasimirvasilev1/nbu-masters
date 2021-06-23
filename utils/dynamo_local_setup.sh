@@ -17,6 +17,3 @@ aws dynamodb put-item --table-name Clients --item '{"Plate": {"S": "H786P0J"}}' 
 aws dynamodb put-item --table-name Clients --item '{"Plate": {"S": "LIPME126"}}' --endpoint-url http://localhost:8000
 aws dynamodb put-item --table-name Clients --item '{"Plate": {"S": "KPC1313"}}' --endpoint-url http://localhost:8000
 aws dynamodb put-item --table-name Clients --item '{"Plate": {"S": "HH0L7687"}}' --endpoint-url http://localhost:8000
-
-# trigger function
-(echo -n '{"image": "'; base64 ~/Desktop/alpr/P00399.jpeg; echo '"}') | curl -H "Content-Type: application/json" -d @- "http://localhost:9000/2015-03-31/functions/function/invocations"
