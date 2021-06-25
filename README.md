@@ -116,13 +116,23 @@ CLOUD_URL=http://{IP-ADDRESS}:9000/2015-03-31/functions/function/invocations
 scp ./raspberry/rasp_check.sh pi@{RASPBERRY_IP}:/var/lib/motion
 ```
 
-8. Start the motion service
+8. Еnable the digital output of Raspberry PI. That's the way of controlling the voltage applied to the diodes, which determines whether they will light up or not.
+
+```
+cd /sys/class/gpio
+echo “17” > ./export
+echo "out" > ./gpio18/direction
+echo "18" > ./export
+echo "out" > ./gpio18/direction
+```
+
+9. Start the motion service
 
 ```
 sudo systemctl start motion
 ```
 
-9. Pull docker image which contains OpenALPR software for automatic number-plate recognition. The image will be used for an offline check or in other words when there is no internet access.
+10. Pull docker image which contains OpenALPR software for automatic number-plate recognition. The image will be used for an offline check or in other words when there is no internet access.
 
 ```
 docker pull krasimirvasilev1/nbu-alpr
