@@ -121,7 +121,7 @@ scp ./raspberry/rasp_check.sh pi@{RASPBERRY_IP}:/var/lib/motion
 ```
 cd /sys/class/gpio
 echo "17" > ./export
-echo "out" > ./gpio18/direction
+echo "out" > ./gpio17/direction
 echo "18" > ./export
 echo "out" > ./gpio18/direction
 ```
