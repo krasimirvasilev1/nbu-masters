@@ -19,12 +19,29 @@ function cloud_check () {
     log "`echo $cloud_response | jq -r .`"
     if [[ "$status" -eq 200 ]]; then
         add_to_cache_file $plate
+        raise_access_barrier
     fi
 }
 
 function recognise_plate () {
     local pic=$1
     return docker run -it --rm -v $(pwd):/data:ro krasimirvasilev1/nbu-alpr -j -c eu + $pic | jq -r '.results[].candidates[].plate'
+}
+
+function raise_access_barrier () {
+    access_allowed
+    sleep 20
+    access_denied
+}
+
+function access_denied () {
+    echo "0" > /sys/class/gpio/gpio17/value
+    echo "1" > /sys/class/gpio/gpio18/value
+}
+
+function access_allowed () {
+    echo "0" > /sys/class/gpio/gpio18/value
+    echo "1" > /sys/class/gpio/gpio17/value
 }
 
 function check_cache_env () {
