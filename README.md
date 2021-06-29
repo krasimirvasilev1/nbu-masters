@@ -124,6 +124,8 @@ echo "17" > ./export
 echo "out" > ./gpio17/direction
 echo "18" > ./export
 echo "out" > ./gpio18/direction
+
+echo "1" > /sys/class/gpio/gpio18/value
 ```
 
 9. Start the motion service
