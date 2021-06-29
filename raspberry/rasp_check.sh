@@ -19,13 +19,7 @@ function cloud_check () {
     log "`echo $cloud_response | jq -r .`"
     if [[ "$status" -eq 200 ]]; then
         add_to_cache_file $plate
-        echo "1" > ./gpio17/value
-        wait 20
-        echo "0" ./gpio17/value
-    elif [[ "$status" -eq 400 ]]; then
-        echo "1" > ./gpio18/value
-        wait 20
-        echo "0" > ./gpio18/value
+        raise_access_barrier
     fi
 }
 
@@ -34,20 +28,29 @@ function recognise_plate () {
     return docker run -it --rm -v $(pwd):/data:ro krasimirvasilev1/nbu-alpr -j -c eu + $pic | jq -r '.results[].candidates[].plate'
 }
 
-# function check_cache_env () {
-#     local plate=$1
-#     if [[ " ${CHECK_CACHE[@]} " =~ " ${plate} " ]]; then
-#         log "Success from offline check!"
-#         return "Success!"
-#     fi
-# }
+function raise_access_barrier () {
+    access_allowed
+    sleep 20
+    access_denied
+}
 
-# function add_to_cache_env () {
-#     local plate=$1
-#     # add check to see if the plate num is already in the cache before adding it
-#     CHECK_CACHE+=$plate
-#     CHECK_CACHE=($(echo "${CHECK_CACHE[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
-# }
+function access_denied () {
+    echo "0" > /sys/class/gpio/gpio17/value
+    echo "1" > /sys/class/gpio/gpio18/value
+}
+
+function access_allowed () {
+    echo "0" > /sys/class/gpio/gpio18/value
+    echo "1" > /sys/class/gpio/gpio17/value
+}
+
+function check_cache_env () {
+    local plate=$1
+    if [[ " ${CHECK_CACHE[@]} " =~ " ${plate} " ]]; then
+        log "Success from offline check!"
+        return "Success!"
+    fi
+}
 
 function check_cache_file () {
     local plate=$1
